@@ -1,28 +1,26 @@
 <template>
   <a-modal
     :visible="visible"
-    title="选择组件"
+    title=""
     :footer="null"
+    :closable="false"
     width="600px"
     @cancel="handleCancel"
   >
     <div class="component-selector">
-      <div class="component-category">
-        <h3>基础组件</h3>
-        <div class="component-list">
-          <div 
-            class="component-card"
-            v-for="component in availableComponents"
-            :key="component.type"
-            @click="handleSelectComponent(component.type)"
-          >
-            <div class="component-icon">
-              <a-icon :type="component.icon" />
-            </div>
-            <div class="component-info">
-              <h4>{{ component.name }}</h4>
-              <p>{{ component.description }}</p>
-            </div>
+      <div class="component-list">
+        <div 
+          class="component-card"
+          v-for="component in availableComponents"
+          :key="component.type"
+          @click="handleSelectComponent(component.type)"
+          :title="component.description"
+        >
+          <div class="component-icon">
+            <a-icon :type="component.icon" />
+          </div>
+          <div class="component-info">
+            <h4>{{ component.name }}</h4>
           </div>
         </div>
       </div>
@@ -31,8 +29,8 @@
 </template>
 
 <script>
-// 引入组件注册表
-import { components } from '../widgets'
+// 引入组件类型定义和元数据
+import { COMPONENT_METADATA, getAllComponentTypes } from '../config/componentTypes'
 
 export default {
   name: 'ComponentSelector',
@@ -44,12 +42,12 @@ export default {
   },
   computed: {
     availableComponents() {
-      // 从组件注册表获取可用组件列表
-      return components.map(component => ({
-        type: component.type,
-        name: component.name,
-        description: component.description,
-        icon: component.icon
+      // 从组件元数据配置获取可用组件列表
+      return getAllComponentTypes().map(type => ({
+        type,
+        name: COMPONENT_METADATA[type].name,
+        description: COMPONENT_METADATA[type].description,
+        icon: COMPONENT_METADATA[type].icon
       }))
     }
   },
@@ -67,35 +65,31 @@ export default {
 
 <style scoped>
 .component-selector {
-  max-height: 400px;
-  overflow-y: auto;
-}
-
-.component-category {
-  margin-bottom: 20px;
-}
-
-.component-category h3 {
-  margin: 0 0 15px 0;
-  font-size: 16px;
-  color: #333;
-  border-bottom: 1px solid #e8e8e8;
-  padding-bottom: 8px;
+  height: 100%;
+  min-height: 400px;
+  padding: 20px;
 }
 
 .component-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fill, 120px);
+  gap: 10px;
+  padding: 0 10px;
 }
 
 .component-card {
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
   border: 1px solid #e8e8e8;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
   background-color: white;
+  width: 120px;
+  height: 120px;
 }
 
 .component-card:hover {
@@ -105,21 +99,16 @@ export default {
 }
 
 .component-icon {
-  font-size: 32px;
+  font-size: 28px;
   color: #1890ff;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .component-info h4 {
-  margin: 0 0 5px 0;
-  font-size: 16px;
-  color: #333;
-}
-
-.component-info p {
   margin: 0;
   font-size: 14px;
-  color: #666;
-  line-height: 1.4;
+  color: #333;
+  text-align: center;
+  font-weight: 500;
 }
 </style>

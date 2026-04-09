@@ -1,9 +1,5 @@
 <template>
   <div class="decoration-builder">
-    <div class="builder-header">
-      <h2>组件装修页面</h2>
-      <a-button type="primary" @click="showComponentSelector = true">添加组件</a-button>
-    </div>
     
     <div class="builder-content">
       <!-- 中间移动端预览 -->
@@ -14,16 +10,16 @@
         @delete-component="handleDeleteComponent"
         @insert-component="handleInsertComponent"
         @update-order="handleUpdateOrder"
+        @close-editor="closeEditor"
+        @show-selector="showComponentSelector = true"
       />
-      
+    </div>
       <!-- 右侧属性编辑 -->
       <Editor 
         v-if="selectedComponent"
         :component="selectedComponent"
         @update-component="handleUpdateComponent"
       />
-    </div>
-    
     <!-- 组件选择弹窗 -->
     <Selector 
       :visible="showComponentSelector"
@@ -34,13 +30,14 @@
 </template>
 
 <script>
-// 引入基础组件
 import Editor from './bases/editor.vue'
 import Preview from './bases/preview.vue'
 import Selector from './bases/selector.vue'
 
-// 引入组件注册表
-import { getComponentDefaultProps } from './widgets'
+// 引入工具函数
+import { generateId } from '@/utils'
+// 引入默认属性配置
+import { getDefaultProps } from './config/defaultProps'
 
 export default {
   name: 'DecorationBuilder',
@@ -63,16 +60,12 @@ export default {
     }
   },
   methods: {
-    generateId() {
-      return Date.now() + Math.random().toString(36).substr(2, 9)
-    },
-    
     handleAddComponent(componentType) {
       const newComponent = {
-        id: this.generateId(),
+        id: generateId(),
         type: componentType,
-        // 从组件注册表获取默认属性
-        props: getComponentDefaultProps(componentType)
+        // 从配置文件获取默认属性
+        props: getDefaultProps(componentType)
       }
       
       this.components.push(newComponent)
@@ -109,6 +102,10 @@ export default {
       if (index > -1) {
         this.components.splice(index, 1, updatedComponent)
       }
+    },
+    closeEditor() {
+      // 关闭编辑器（取消选中组件）
+      this.selectedComponentId = null
     }
   }
 }
@@ -119,26 +116,18 @@ export default {
   width: 100%;
   min-height: 100vh;
   background-color: #f5f5f5;
-  padding: 20px;
-}
-
-.builder-header {
+  position: relative;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  padding: 0 20px;
 }
 
-.builder-header h2 {
-  margin: 0;
-  color: #333;
-}
 
 .builder-content {
   display: flex;
   gap: 20px;
   justify-content: center;
   align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 </style>

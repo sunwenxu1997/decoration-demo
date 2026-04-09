@@ -67,6 +67,7 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  pointer-events: none; /* 禁止图片被点击, 否则会影响组件拖拽 */
 }
 
 .empty-banner {

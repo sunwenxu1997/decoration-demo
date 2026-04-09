@@ -21,20 +21,22 @@
 
 <script>
 // 引入组件注册表
-import { components } from '../widgets'
+import { widgets } from '../widgets'
+// 引入工具函数
+import { deepClone } from '@/utils'
 
 // 创建编辑器组件映射
 const editorMap = {}
-components.forEach(component => {
-  editorMap[component.type] = component.Editor
+widgets.forEach(widget => {
+  editorMap[widget.type] = widget.Editor
 })
 
 export default {
   name: 'PropertyEditor',
   components: {
     // 注册所有编辑器组件
-    ...components.reduce((acc, component) => {
-      acc[component.Editor.name] = component.Editor
+    ...widgets.reduce((acc, widget) => {
+      acc[widget.Editor.name] = widget.Editor
       return acc
     }, {})
   },
@@ -46,14 +48,14 @@ export default {
   },
   data() {
     return {
-      localComponent: JSON.parse(JSON.stringify(this.component)),
+      localComponent: deepClone(this.component),
       currentEditor: null
     }
   },
   watch: {
     component: {
       handler(newVal) {
-        this.localComponent = JSON.parse(JSON.stringify(newVal))
+        this.localComponent = deepClone(newVal)
         this.loadComponentEditor(newVal.type)
       },
       deep: true,
@@ -85,11 +87,12 @@ export default {
 
 <style scoped>
 .property-editor {
-  width: 350px;
+  width: 400px;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
+  box-sizing: border-box;
 }
 
 .property-editor h3 {
@@ -101,7 +104,7 @@ export default {
 }
 
 .property-content {
-  max-height: 600px;
+  max-height: calc(100vh - 170px);
   overflow-y: auto;
 }
 
