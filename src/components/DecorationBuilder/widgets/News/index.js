@@ -9,5 +9,17 @@ export default {
   // 预览组件
   Preview: NewsPreview,
   // 编辑组件
-  Editor: NewsEditor
+  Editor: NewsEditor,
+  // 默认属性配置
+  defaultProps: {
+    title: '最新资讯',
+    news: [
+      { id: 1, title: '装修小技巧分享', date: '2026-04-01', link: '' },
+      { id: 2, title: '春季装修注意事项', date: '2026-04-02', link: '' },
+      { id: 3, title: '现代简约风格解析', date: '2026-04-03', link: '' }
+    ],
+    showDate: true,
+    showArrow: true,
+    maxItems: 5
+  }
 }

@@ -37,8 +37,8 @@ import Selector from './bases/Selector/index'
 
 // 引入工具函数
 import { generateId } from '@/utils'
-// 引入默认属性配置
-import { getDefaultProps } from './config/defaultProps'
+// 引入组件工具函数
+import { getWidgetDefaultProps } from '@/utils/componentUtils'
 
 export default {
   name: 'DecorationBuilder',
@@ -65,8 +65,8 @@ export default {
       const newComponent = {
         id: generateId(),
         type: componentType,
-        // 从配置文件获取默认属性
-        props: getDefaultProps(componentType)
+        // 从组件配置中获取默认属性
+        props: getWidgetDefaultProps(componentType)
       }
       
       this.components.push(newComponent)

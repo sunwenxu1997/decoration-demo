@@ -29,38 +29,3 @@ export const COMPONENT_METADATA = {
     category: '基础组件'
   }
 }
-
-/**
- * 根据组件类型获取元数据
- * @param {string} type 组件类型
- * @returns {Object|null} 组件元数据
- */
-export const getComponentMetadata = (type) => {
-  return COMPONENT_METADATA[type] || null
-}
-
-/**
- * 获取所有组件类型列表
- * @returns {Array<string>} 组件类型列表
- */
-export const getAllComponentTypes = () => {
-  return Object.values(COMPONENT_TYPES)
-}
-
-/**
- * 获取组件类型分组
- * @returns {Object} 按分类分组的组件类型
- */
-export const getComponentTypesByCategory = () => {
-  const categories = {}
-  
-  Object.entries(COMPONENT_METADATA).forEach(([type, metadata]) => {
-    const category = metadata.category || '未分类'
-    if (!categories[category]) {
-      categories[category] = []
-    }
-    categories[category].push(type)
-  })
-  
-  return categories
-}
