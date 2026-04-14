@@ -12,6 +12,7 @@
         @update-order="handleUpdateOrder"
         @close-editor="closeEditor"
         @show-selector="showComponentSelector = true"
+        @publish="handlePublish"
       />
     </div>
       <!-- 右侧属性编辑 -->
@@ -30,9 +31,9 @@
 </template>
 
 <script>
-import Editor from './bases/Editor/index.vue'
-import Preview from './bases/Preview/index.vue'
-import Selector from './bases/Selector/index.vue'
+import Editor from './bases/Editor/index'
+import Preview from './bases/Preview/index'
+import Selector from './bases/Selector/index'
 
 // 引入工具函数
 import { generateId } from '@/utils'
@@ -106,6 +107,13 @@ export default {
     closeEditor() {
       // 关闭编辑器（取消选中组件）
       this.selectedComponentId = null
+    },
+    
+    handlePublish() {
+      // 处理发布逻辑
+      console.log('发布组件内容:', this.components)
+      // 这里可以添加发布到服务器的逻辑
+      alert('组件已发布！')
     }
   }
 }

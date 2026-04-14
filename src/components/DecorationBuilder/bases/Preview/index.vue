@@ -8,22 +8,11 @@
     />
     <div class="browser-preview" :style="previewStyle">
       <div class="browser-header">
-        <div class="browser-toolbar">
-          <div 
-            class="toolbar-btn" 
-            @click="$emit('close-editor')"
-            title="预览"
-          >
-            <a-icon type="eye"/>
-          </div>
-          <div 
-            class="toolbar-btn" 
-            @click="$emit('show-selector')"
-            title="添加组件"
-          >
-            <a-icon type="plus-circle"  />
-          </div>
-        </div>
+        <BrowserToolbar 
+          @close-editor="$emit('close-editor')"
+          @show-selector="$emit('show-selector')"
+          @publish="$emit('publish')"
+        />
       </div>
       <div class="browser-content">
         <draggable 
@@ -93,6 +82,8 @@ import draggable from 'vuedraggable'
 import { widgets } from '../../widgets'
 // 引入尺寸编辑器组件
 import SizeEditor from './components/SizeEditor'
+// 引入工具栏组件
+import BrowserToolbar from './components/BrowserToolbar'
 // 引入预览设置配置
 import { PREVIEW_SETTINGS } from '../../config/settings'
 
@@ -112,7 +103,8 @@ export default {
     }, {}),
     // 注册基础组件
     draggable,
-    SizeEditor
+    SizeEditor,
+    BrowserToolbar
   },
   props: {
     components: {
@@ -230,28 +222,7 @@ export default {
   justify-content: flex-end;
 }
 
-/* 浏览器工具栏 */
-.browser-toolbar {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-}
-
-/* 工具栏按钮 */
-.toolbar-btn {
-  width: 28px;
-  height: 28px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.toolbar-btn:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-}
+/* 浏览器工具栏样式已移至Toolbar组件 */
 
 /* 浏览器控制按钮已移除 */
 
