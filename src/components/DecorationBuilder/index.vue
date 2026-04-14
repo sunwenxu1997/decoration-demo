@@ -30,9 +30,9 @@
 </template>
 
 <script>
-import Editor from './bases/editor.vue'
-import Preview from './bases/preview.vue'
-import Selector from './bases/selector.vue'
+import Editor from './bases/Editor/index.vue'
+import Preview from './bases/Preview/index.vue'
+import Selector from './bases/Selector/index.vue'
 
 // 引入工具函数
 import { generateId } from '@/utils'

@@ -1,6 +1,12 @@
 <template>
   <div class="mobile-preview-container">
-    <div class="browser-preview">
+    <!-- 尺寸编辑器 -->
+    <SizeEditor 
+      :width="previewWidth" 
+      :height="previewHeight"
+      @update-size="handleSizeChange"
+    />
+    <div class="browser-preview" :style="previewStyle">
       <div class="browser-header">
         <div class="browser-toolbar">
           <div 
@@ -84,7 +90,11 @@
 <script>
 import draggable from 'vuedraggable'
 // 引入组件注册表
-import { widgets } from '../widgets'
+import { widgets } from '../../widgets'
+// 引入尺寸编辑器组件
+import SizeEditor from './components/SizeEditor'
+// 引入预览设置配置
+import { PREVIEW_SETTINGS } from '../../config/settings'
 
 // 创建组件映射
 const widgetMap = {}
@@ -95,12 +105,14 @@ widgets.forEach(widget => {
 export default {
   name: 'MobilePreview',
   components: {
-    draggable,
     // 注册所有预览组件
     ...widgets.reduce((acc, widget) => {
       acc[widget.Preview.name] = widget.Preview
       return acc
-    }, {})
+    }, {}),
+    // 注册基础组件
+    draggable,
+    SizeEditor
   },
   props: {
     components: {
@@ -114,7 +126,41 @@ export default {
   },
   data() {
     return {
-      loadedPreviews: widgetMap
+      loadedPreviews: widgetMap,
+      // 使用配置文件中的默认尺寸
+      previewWidth: PREVIEW_SETTINGS.MOBILE_WIDTH,
+      previewHeight: PREVIEW_SETTINGS.MOBILE_HEIGHT
+    }
+  },
+  computed: {
+    previewStyle() {
+      // 计算最大允许尺寸，确保不超出窗口
+      const maxWidth = window.innerWidth - 600
+      const maxHeight = window.innerHeight - 150
+      
+      // 计算宽高比
+      const aspectRatio = this.previewWidth / this.previewHeight
+      
+      // 确保等比例缩放且不超出窗口大小
+      let width = this.previewWidth
+      let height = this.previewHeight
+      
+      // 如果宽度超过最大允许宽度，按比例缩小
+      if (width > maxWidth) {
+        width = maxWidth
+        height = width / aspectRatio
+      }
+      
+      // 如果高度超过最大允许高度，按比例缩小
+      if (height > maxHeight) {
+        height = maxHeight
+        width = height * aspectRatio
+      }
+      
+      return {
+        width: `${width}px`,
+        aspectRatio: `${this.previewWidth} / ${this.previewHeight}`
+      }
     }
   },
   methods: {
@@ -137,7 +183,15 @@ export default {
     handleDragEnd() {
       // 拖拽结束后通知父组件更新顺序
       this.$emit('update-order', [...this.components])
-    }
+    },
+    handleSizeChange(size) {
+      // 更新尺寸并保持等比例
+      const { width, height } = size
+      if (!isNaN(width) && !isNaN(height)) {
+        this.previewWidth = width
+        this.previewHeight = height
+      }
+    },
   }
 }
 </script>
@@ -145,20 +199,17 @@ export default {
 <style scoped>
 .mobile-preview-container {
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
   padding: 20px 0;
+  position: relative;
 }
 
 /* 浏览器样式 */
 .browser-preview {
-  /* 保持375:812的比例 */
-  aspect-ratio: 375 / 812;
-  width: 375px;
-  max-width: calc(100vw - 40px);
-  max-height: calc(100vh - 100px);
-  /* 等比例缩放 */
-  width: min(375px, calc((100vh - 100px) * (375 / 812)));
+  /* 基础样式，具体尺寸由计算属性动态设置 */
+  max-width: calc(100vw - 600px);
+  max-height: calc(100vh - 150px);
   border-radius: 8px;
   background-color: white;
   overflow: hidden;
@@ -166,7 +217,7 @@ export default {
   position: relative;
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
+  margin: 10px auto;
 }
 
 .browser-header {
@@ -214,13 +265,30 @@ export default {
   -moz-user-select: none;
   -ms-user-select: none;
 }
+/* 自定义滚动样式 */
+.browser-content::-webkit-scrollbar {
+  width: 3px;
+}
+
+.browser-content::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+.browser-content::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.browser-content::-webkit-scrollbar-thumb:hover {
+  background-color: #999;
+}
 
 /* 组件样式 */
 .component-item {
   position: relative;
   margin-bottom: 15px;
-  padding: 10px;
-  border: 2px solid transparent;
+  border: 3px dashed transparent;
   border-radius: 8px;
   transition: all 0.3s ease;
   cursor: move;

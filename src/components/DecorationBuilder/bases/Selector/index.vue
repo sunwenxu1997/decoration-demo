@@ -30,7 +30,7 @@
 
 <script>
 // 引入组件类型定义和元数据
-import { COMPONENT_METADATA, getAllComponentTypes } from '../config/componentTypes'
+import { COMPONENT_METADATA, getAllComponentTypes } from '../../config/componentTypes'
 
 export default {
   name: 'ComponentSelector',

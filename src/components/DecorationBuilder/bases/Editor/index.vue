@@ -1,6 +1,5 @@
 <template>
   <div class="property-editor">
-    <h3>组件属性</h3>
     <div class="property-content">
       <component 
         v-if="currentEditor"
@@ -21,7 +20,7 @@
 
 <script>
 // 引入组件注册表
-import { widgets } from '../widgets'
+import { widgets } from '../../widgets'
 // 引入工具函数
 import { deepClone } from '@/utils'
 
@@ -87,12 +86,11 @@ export default {
 
 <style scoped>
 .property-editor {
-  width: 400px;
+  width: 500px;
   background-color: white;
-  border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
   box-sizing: border-box;
+  height: 100vh;
 }
 
 .property-editor h3 {
@@ -104,8 +102,9 @@ export default {
 }
 
 .property-content {
-  max-height: calc(100vh - 170px);
+  max-height: calc(100vh - 80px);
   overflow-y: auto;
+  padding: 20px;
 }
 
 .image-item,
@@ -131,10 +130,28 @@ export default {
 }
 
 .property-footer {
-  margin-top: 20px;
-  padding-top: 15px;
+  padding: 20px;
+  box-sizing: border-box;
   border-top: 1px solid #e8e8e8;
   display: flex;
   justify-content: flex-end;
+}
+/* 自定义滚动样式 */
+.property-content::-webkit-scrollbar {
+  width: 3px;
+}
+
+.property-content::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+.property-content::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.property-content::-webkit-scrollbar-thumb:hover {
+  background-color: #999;
 }
 </style>
