@@ -1,6 +1,9 @@
 <template>
   <div class="decoration-builder">
-    
+    <!-- 组件选择器 -->
+    <Selector 
+      @select-component="handleAddComponent"
+    />
     <div class="builder-content">
       <!-- 中间移动端预览 -->
       <Preview 
@@ -8,10 +11,8 @@
         :selected-component-id="selectedComponentId"
         @select-component="handleSelectComponent"
         @delete-component="handleDeleteComponent"
-        @insert-component="handleInsertComponent"
         @update-order="handleUpdateOrder"
         @close-editor="closeEditor"
-        @show-selector="showComponentSelector = true"
         @publish="handlePublish"
       />
     </div>
@@ -21,12 +22,6 @@
         :component="selectedComponent"
         @update-component="handleUpdateComponent"
       />
-    <!-- 组件选择弹窗 -->
-    <Selector 
-      :visible="showComponentSelector"
-      @update:visible="showComponentSelector = $event"
-      @select-component="handleAddComponent"
-    />
   </div>
 </template>
 
@@ -58,7 +53,6 @@ export default {
   data() {
     return {
       components: [],
-      showComponentSelector: false,
       selectedComponentId: null
     }
   },
@@ -97,7 +91,6 @@ export default {
         this.components.push(newComponent)
       }
       this.selectedComponentId = newComponent.id
-      this.showComponentSelector = false
     },
     
     handleSelectComponent(componentId) {
@@ -112,10 +105,6 @@ export default {
           this.selectedComponentId = null
         }
       }
-    },
-    
-    handleInsertComponent() {
-      this.showComponentSelector = true
     },
     
     handleUpdateOrder(newComponents) {

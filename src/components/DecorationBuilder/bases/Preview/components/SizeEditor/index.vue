@@ -85,8 +85,6 @@ export default {
   background-color: #f5f5f5;
   border-radius: 4px;
   font-size: 14px;
-  position: absolute;
-  top: -20px;
 }
 
 .size-input {

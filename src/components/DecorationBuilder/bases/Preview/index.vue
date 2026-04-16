@@ -10,7 +10,6 @@
       <div class="browser-header">
         <BrowserToolbar 
           @close-editor="$emit('close-editor')"
-          @show-selector="$emit('show-selector')"
           @publish="$emit('publish')"
         />
       </div>
@@ -50,10 +49,6 @@
                   <a-icon type="ellipsis" :style="{ fontSize: '16px', color: '#999' }" />
                 </span>
                 <a-menu slot="overlay">
-                  <a-menu-item @click="handleInsertComponent()">
-                    <a-icon type="plus-circle" style="margin-right: 8px;" />
-                    添加组件
-                  </a-menu-item>
                   <a-menu-item 
                     @click="handleDeleteComponent(element.id)"
                     style="color: #ff4d4f;"
@@ -69,7 +64,7 @@
         
         <div v-if="components.length === 0" class="empty-state">
           <a-icon type="plus-circle" :style="{ fontSize: '25px', color: '#ccc' }" />
-          <p>点击右下角添加组件</p>
+          <p>点击左侧添加组件</p>
         </div>
       </div>
     </div>
@@ -128,7 +123,7 @@ export default {
     previewStyle() {
       // 计算最大允许尺寸，确保不超出窗口
       const maxWidth = window.innerWidth - 600
-      const maxHeight = window.innerHeight - 150
+      const maxHeight = window.innerHeight - 100
       
       // 计算宽高比
       const aspectRatio = this.previewWidth / this.previewHeight
@@ -168,10 +163,6 @@ export default {
       this.$emit('delete-component', componentId)
     },
     
-    handleInsertComponent() {
-      this.$emit('insert-component')
-    },
-    
     handleDragEnd() {
       // 拖拽结束后通知父组件更新顺序
       this.$emit('update-order', [...this.components])
@@ -193,7 +184,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 0;
+  padding: 20px;
   position: relative;
 }
 
@@ -201,7 +192,7 @@ export default {
 .browser-preview {
   /* 基础样式，具体尺寸由计算属性动态设置 */
   max-width: calc(100vw - 600px);
-  max-height: calc(100vh - 150px);
+  max-height: calc(100vh - 100px);
   border-radius: 8px;
   background-color: white;
   overflow: hidden;

@@ -1,31 +1,30 @@
 <template>
-  <a-modal
-    :visible="visible"
-    title=""
-    :footer="null"
-    :closable="false"
-    width="600px"
-    @cancel="handleCancel"
-  >
-    <div class="component-selector">
+  <div class="component-selector-container">
+    <!-- 组件选择器面板 -->
+    <div class="component-selector" :class="{ 'expanded': isExpanded }">
+      <!-- 展开/收缩按钮 -->
+      <div class="toggle-btn" @click="isExpanded = !isExpanded" :title="isExpanded ? '收起组件列表' : '展开组件列表'">
+        <a-icon :type="isExpanded ? 'left' : 'right'" />
+      </div>
+
+      <!-- 组件列表 -->
       <div class="component-list">
-        <div 
-          class="component-card"
-          v-for="component in availableComponents"
-          :key="component.type"
-          @click="handleSelectComponent(component.type)"
-          :title="component.description"
-        >
-          <div class="component-icon">
-            <a-icon :type="component.icon" />
+        <div class="component-card" v-for="component in availableComponents" :key="component.type"
+          @click="handleSelectComponent(component.type)" :title="component.name">
+
+          <!-- 标题和描述，在展开时显示 -->
+          <div v-if="isExpanded" class="component-info">
+            <div class="component-header">
+              <a-icon class="component-icon" :type="component.icon" />
+              <div class="component-name">{{ component.name }}</div>
+            </div>
+            <div class="component-desc">{{ component.description }}</div>
           </div>
-          <div class="component-info">
-            <h4>{{ component.name }}</h4>
-          </div>
+          <a-icon v-else class="component-icon" :type="component.icon" />
         </div>
       </div>
     </div>
-  </a-modal>
+  </div>
 </template>
 
 <script>
@@ -36,10 +35,9 @@ import { getAllComponentTypes } from '@/utils/componentUtils'
 
 export default {
   name: 'ComponentSelector',
-  props: {
-    visible: {
-      type: Boolean,
-      default: false
+  data() {
+    return {
+      isExpanded: false // 控制组件选择器的展开/收缩状态
     }
   },
   computed: {
@@ -56,61 +54,155 @@ export default {
   methods: {
     handleSelectComponent(componentType) {
       this.$emit('select-component', componentType)
-      this.$emit('update:visible', false)
-    },
-    handleCancel() {
-      this.$emit('update:visible', false)
     }
   }
 }
 </script>
 
 <style scoped>
+/* 组件选择器容器 */
+.component-selector-container {
+  display: flex;
+  align-items: stretch;
+}
+
+/* 组件选择器面板 */
 .component-selector {
-  height: 100%;
-  min-height: 400px;
-  padding: 20px;
-}
-
-.component-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 120px);
-  gap: 10px;
-  padding: 0 10px;
-}
-
-.component-card {
+  width: 60px;
+  height: 100vh;
+  background-color: white;
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+/* 展开/收缩按钮 */
+.toggle-btn {
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  background-color: #1890ff;
+  color: white;
+  border-radius: 50%;
+  display: flex;
   align-items: center;
   justify-content: center;
-  padding: 15px;
-  border: 1px solid #e8e8e8;
-  border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  background-color: white;
-  width: 120px;
-  height: 120px;
+  z-index: 5;
+}
+
+.toggle-btn i {
+  font-size: 10px;
+}
+
+.toggle-btn:hover {
+  background-color: #40a9ff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* 组件列表 */
+.component-list {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  flex-grow: 1;
+  padding: 5px;
+  gap: 5px;
+}
+
+/* 自定义滚动条 */
+.component-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.component-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 2px;
+}
+
+.component-list::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 2px;
+}
+
+.component-list::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+/* 组件卡片 */
+.component-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: transparent;
+  width: 100%;
+  aspect-ratio: 1;
+  position: relative;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+/* 展开状态 */
+.component-selector.expanded {
+  width: 250px;
+}
+
+.component-selector.expanded .component-list {
+  padding: 10px;
+  gap: 10px;
+}
+
+/* 展开状态下的卡片 */
+.component-selector.expanded .component-card {
+  padding: 15px 20px;
+  /* 组件展开时，上下排列 */
+  flex-direction: column;
+  aspect-ratio: 2 / 1;
+  background: #f3f3f3;
+}
+
+.component-selector.expanded .component-icon {
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+.component-selector.expanded .component-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.component-selector.expanded .component-info .component-name {
+  font-size: 13px;
+  font-weight: bold;
+  text-align: center;
+  margin: 6px 0;
+}
+
+.component-selector.expanded .component-info .component-desc {
+  font-size: 11px;
+  color: #666;
 }
 
 .component-card:hover {
-  border-color: #1890ff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
+  background-color: #d0e3f5 !important;
 }
 
+/* 组件图标 */
 .component-icon {
-  font-size: 28px;
-  color: #1890ff;
-  margin-bottom: 8px;
-}
-
-.component-info h4 {
-  margin: 0;
   font-size: 14px;
-  color: #333;
-  text-align: center;
-  font-weight: 500;
+  color: #1890ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
 }
 </style>

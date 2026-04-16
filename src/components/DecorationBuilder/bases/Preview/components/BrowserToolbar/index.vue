@@ -9,13 +9,6 @@
     </div>
     <div 
       class="toolbar-btn" 
-      @click="$emit('show-selector')"
-      title="添加组件"
-    >
-      <a-icon type="plus-circle" />
-    </div>
-    <div 
-      class="toolbar-btn" 
       @click="$emit('publish')"
       title="发布"
     >
@@ -30,7 +23,7 @@ export default {
   props: {
     // 可以添加需要的属性
   },
-  emits: ['close-editor', 'show-selector', 'publish']
+  emits: ['close-editor', 'publish']
 }
 </script>
 
