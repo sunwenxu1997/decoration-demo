@@ -42,9 +42,6 @@ src/
     └── index.js                    # 通用工具函数
 ```
 
-## 核心组件说明
-插入一张图片
-![组件装修工具](./public/README/gif_1.gif)
 ```mermaid
 graph TD
     A[DecorationBuilder] --> B[bases]
@@ -68,6 +65,8 @@ graph TD
     D --> P[index.js]
 ```
 
+## 核心组件说明
+![组件装修工具](./public/README/gif_1.gif)
 ### 1. DecorationBuilder (主入口)
 - 文件：`src/components/DecorationBuilder/index.vue`
 - 功能：整合预览、编辑器和选择器组件，管理组件数据和交互逻辑
