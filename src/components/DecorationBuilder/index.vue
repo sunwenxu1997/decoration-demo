@@ -82,7 +82,20 @@ export default {
         props: getWidgetDefaultProps(componentType)
       }
       
-      this.components.push(newComponent)
+      // 检查是否需要在选中组件后面插入
+      if (this.selectedComponentId) {
+        const index = this.components.findIndex(comp => comp.id === this.selectedComponentId)
+        if (index !== -1) {
+          // 在选中组件后面插入新组件
+          this.components.splice(index + 1, 0, newComponent)
+        } else {
+          // 如果找不到选中组件，默认添加到末尾
+          this.components.push(newComponent)
+        }
+      } else {
+        // 默认添加到末尾
+        this.components.push(newComponent)
+      }
       this.selectedComponentId = newComponent.id
       this.showComponentSelector = false
     },
@@ -102,9 +115,7 @@ export default {
     },
     
     handleInsertComponent() {
-      this.selectedComponentId = null
       this.showComponentSelector = true
-      // 这里可以记录插入位置，后续在handleAddComponent中处理
     },
     
     handleUpdateOrder(newComponents) {

@@ -297,8 +297,8 @@ export default {
 
 /* 更多按钮样式 */
 .more-btn {
-  width: 28px;
-  height: 28px;
+  width: 20px;
+  height: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
