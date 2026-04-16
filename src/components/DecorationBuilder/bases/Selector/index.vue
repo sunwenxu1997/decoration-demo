@@ -84,7 +84,7 @@ export default {
   transform: translateY(-50%);
   width: 20px;
   height: 20px;
-  background-color: #1890ff;
+  background-color: var(--primary-color);
   color: white;
   border-radius: 50%;
   display: flex;
@@ -100,7 +100,7 @@ export default {
 }
 
 .toggle-btn:hover {
-  background-color: #40a9ff;
+  background-color: var(--primary-hover);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   transform: translateY(-50%) scale(1.1);
 }
@@ -192,13 +192,13 @@ export default {
 }
 
 .component-card:hover {
-  background-color: #d0e3f5 !important;
+  background-color: #f1f6fc !important;
 }
 
 /* 组件图标 */
 .component-icon {
   font-size: 14px;
-  color: #1890ff;
+  color: var(--primary-color);
   display: flex;
   align-items: center;
   justify-content: center;

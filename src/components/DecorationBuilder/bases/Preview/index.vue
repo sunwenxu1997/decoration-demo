@@ -262,7 +262,7 @@ export default {
 }
 
 .component-selected {
-  border-color: #1890ff !important;
+  border-color: var(--primary-color) !important;
   background-color: rgba(24, 144, 255, 0.05);
 }
 

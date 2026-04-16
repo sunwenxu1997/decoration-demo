@@ -97,7 +97,7 @@ export default {
 }
 
 .news-link:hover .news-item-title {
-  color: #1890ff;
+  color: var(--primary-color);
 }
 
 .news-item-date {

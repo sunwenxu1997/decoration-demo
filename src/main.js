@@ -3,6 +3,9 @@ import App from './App.vue'
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 
+// 引入全局主题样式
+import './styles/main.css'
+
 Vue.use(Antd)
 Vue.config.productionTip = false
 
