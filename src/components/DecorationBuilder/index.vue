@@ -48,11 +48,24 @@ export default {
     Preview,
     Selector
   },
+  props: {
+    // 初始组件数据，用于页面初始化渲染
+    initialComponents: {
+      type: Array,
+      default: () => []
+    }
+  },
   data() {
     return {
       components: [],
       showComponentSelector: false,
       selectedComponentId: null
+    }
+  },
+  created() {
+    // 如果有初始数据，复制到组件列表中
+    if (this.initialComponents && this.initialComponents.length > 0) {
+      this.components = [...this.initialComponents]
     }
   },
   computed: {

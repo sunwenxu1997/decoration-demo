@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <DecorationBuilder />
+    <DecorationBuilder :initial-components="initialComponents" />
   </div>
 </template>
 
@@ -11,6 +11,11 @@ export default {
   name: 'App',
   components: {
     DecorationBuilder
+  },
+  data() {
+    return {
+      initialComponents: []
+    }
   }
 }
 </script>
