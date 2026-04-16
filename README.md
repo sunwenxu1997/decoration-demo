@@ -138,6 +138,62 @@ export const PREVIEW_SETTINGS = {
 | banner  | 轮播图   | BannerPreview | BannerEditor |
 | news-list | 新闻列表 | NewsPreview | NewsEditor |
 
+## 数据格式说明
+
+### 标准组件数据格式
+
+```json
+[
+  {
+    "id": "1234567890",
+    "type": "banner",
+    "props": {
+      "images": [
+        { "url": "https://example.com/image1.jpg", "link": "" },
+        { "url": "https://example.com/image2.jpg", "link": "" }
+      ],
+      "autoPlay": true,
+      "interval": 3000,
+      "dots": true,
+      "arrows": false
+    }
+  },
+  {
+    "id": "0987654321",
+    "type": "news-list",
+    "props": {
+      "title": "最新资讯",
+      "news": [
+        { "id": 1, "title": "新闻标题1", "date": "2026-04-16", "link": "" },
+        { "id": 2, "title": "新闻标题2", "date": "2026-04-17", "link": "" }
+      ],
+      "showDate": true,
+      "showArrow": true,
+      "maxItems": 5
+    }
+  }
+]
+```
+
+### 字段说明
+
+- **id**：组件唯一标识符，由系统自动生成
+- **type**：组件类型，对应 `COMPONENT_TYPES` 中的值
+- **props**：组件属性，包含所有可配置的参数
+
+### 数据来源
+
+1. **默认数据**：组件的初始默认属性来自各组件的 `index.js` 文件中的 `defaultProps`
+2. **用户配置**：用户在编辑器中修改的属性会覆盖默认属性
+3. **保存/发布**：最终的组件数据会以标准JSON格式保存或发布
+
+### 使用方式
+
+- **前端渲染**：通过组件类型动态加载对应的预览组件，并传入props进行渲染
+- **后端存储**：可以将JSON数据存储到后端数据库中
+- **页面加载**：从后端获取JSON数据后，可以直接传递给DecorationBuilder组件进行渲染
+
+
 ## 添加新组件指南
 
 以添加一个"轮播的通知公告"组件为例：
