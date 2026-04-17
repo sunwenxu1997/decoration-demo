@@ -1,16 +1,19 @@
 <template>
   <div id="app">
     <DecorationBuilder :initial-components="initialComponents" />
+    <!-- <PublishedPreview :initial-components="initialComponents" /> -->
   </div>
 </template>
 
 <script>
 import DecorationBuilder from './components/DecorationBuilder/index.vue'
+// import PublishedPreview from './components/PublishedPreview/index.vue'
 
 export default {
   name: 'App',
   components: {
-    DecorationBuilder
+    DecorationBuilder,
+    // PublishedPreview
   },
   data() {
     return {

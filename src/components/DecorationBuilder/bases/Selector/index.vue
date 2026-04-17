@@ -54,6 +54,9 @@ export default {
   methods: {
     handleSelectComponent(componentType) {
       this.$emit('select-component', componentType)
+    },
+    closeSelector() {
+      this.isExpanded = false
     }
   }
 }

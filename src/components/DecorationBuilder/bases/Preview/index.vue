@@ -9,11 +9,11 @@
     <div class="browser-preview" :style="previewStyle">
       <div class="browser-header">
         <BrowserToolbar 
-          @close-editor="$emit('close-editor')"
+          @preview="handlePreview"
           @publish="$emit('publish')"
         />
       </div>
-      <div class="browser-content">
+      <div v-if="!isPreviewing" class="browser-content">
         <draggable 
           :list="components" 
           group="components"
@@ -67,6 +67,11 @@
           <p>点击左侧添加组件</p>
         </div>
       </div>
+      <!-- 预览模式下的内容 -->
+      <PublishedPreview 
+        v-else
+        :initial-components="components"
+      />
     </div>
   </div>
 </template>
@@ -81,6 +86,8 @@ import SizeEditor from './components/SizeEditor'
 import BrowserToolbar from './components/BrowserToolbar'
 // 引入预览设置配置
 import { PREVIEW_SETTINGS } from '../../config/settings'
+// 引入纯净预览组件
+import PublishedPreview from '../../../PublishedPreview'
 
 // 创建组件映射
 const widgetMap = {}
@@ -99,7 +106,8 @@ export default {
     // 注册基础组件
     draggable,
     SizeEditor,
-    BrowserToolbar
+    BrowserToolbar,
+    PublishedPreview
   },
   props: {
     components: {
@@ -116,7 +124,8 @@ export default {
       loadedPreviews: widgetMap,
       // 使用配置文件中的默认尺寸
       previewWidth: PREVIEW_SETTINGS.MOBILE_WIDTH,
-      previewHeight: PREVIEW_SETTINGS.MOBILE_HEIGHT
+      previewHeight: PREVIEW_SETTINGS.MOBILE_HEIGHT,
+      isPreviewing: false
     }
   },
   computed: {
@@ -175,6 +184,11 @@ export default {
         this.previewHeight = height
       }
     },
+    // 预览
+    handlePreview(isPreviewing) {
+      this.isPreviewing = isPreviewing
+      this.$emit('close-editor')
+    },
   }
 }
 </script>
@@ -220,7 +234,7 @@ export default {
 .browser-content {
   flex: 1;
   overflow-y: auto;
-  padding: 10px;
+  /* padding: 10px; */
   /* 内容不可选中 */
   user-select: none;
   -webkit-user-select: none;
@@ -249,10 +263,10 @@ export default {
 /* 组件样式 */
 .component-item {
   position: relative;
-  margin-bottom: 15px;
+  /* margin-bottom: 10px; */
   border: 3px dashed transparent;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+  /* border-radius: 8px; */
+  /* transition: all 0.3s ease; */
   cursor: move;
   overflow: hidden;
 }

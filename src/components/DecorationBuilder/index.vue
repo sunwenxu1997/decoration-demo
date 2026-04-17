@@ -2,6 +2,7 @@
   <div class="decoration-builder">
     <!-- 组件选择器 -->
     <Selector 
+      ref="selector"
       @select-component="handleAddComponent"
     />
     <div class="builder-content">
@@ -120,6 +121,8 @@ export default {
     closeEditor() {
       // 关闭编辑器（取消选中组件）
       this.selectedComponentId = null
+      // 关闭左侧组件选择框
+      this.$refs.selector.closeSelector()
     },
     
     handlePublish() {

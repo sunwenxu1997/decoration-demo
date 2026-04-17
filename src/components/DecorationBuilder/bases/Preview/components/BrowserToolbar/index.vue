@@ -2,14 +2,15 @@
   <div class="browser-toolbar">
     <div 
       class="toolbar-btn" 
-      @click="$emit('close-editor')"
-      title="预览"
+      @click="handlePreview"
+      :title="isPreviewing ? '关闭预览' : '预览'"
     >
-      <a-icon type="eye"/>
+      <a-icon v-if="!isPreviewing" type="eye"/>
+      <a-icon v-else type="eye-invisible" />
     </div>
     <div 
       class="toolbar-btn" 
-      @click="$emit('publish')"
+      @click="handlePublish"
       title="发布"
     >
       <a-icon type="check-circle" />
@@ -23,7 +24,23 @@ export default {
   props: {
     // 可以添加需要的属性
   },
-  emits: ['close-editor', 'publish']
+  emits: ['close-editor', 'publish'],
+  data() {
+    return {
+      isPreviewing: false
+    }
+  },
+  methods: {
+    // 预览
+    handlePreview() {
+      this.isPreviewing = !this.isPreviewing
+      this.$emit('preview', this.isPreviewing)
+      // this.$router.push({ name: 'Published' })
+    },
+    handlePublish() {
+      this.$emit('publish')
+    }
+  }
 }
 </script>
 
