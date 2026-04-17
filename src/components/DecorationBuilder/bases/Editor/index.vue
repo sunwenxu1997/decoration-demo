@@ -22,7 +22,7 @@
 // 引入组件注册表
 import { widgets } from '../../widgets'
 // 引入工具函数
-import { deepClone } from '@/utils'
+import { deepClone } from '../../utils'
 
 // 创建编辑器组件映射
 const editorMap = {}

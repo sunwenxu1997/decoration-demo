@@ -24,7 +24,7 @@
 
 <script>
 // 引入组件注册表
-import { widgets } from '../DecorationBuilder/widgets'
+import { widgets } from '../../../../widgets'
 
 // 创建组件映射
 const widgetMap = {}
@@ -59,6 +59,7 @@ export default {
 
 <style scoped>
 .published-preview-container {
+  flex: 1;
   overflow-y: auto;
 }
 /* 自定义滚动样式 */

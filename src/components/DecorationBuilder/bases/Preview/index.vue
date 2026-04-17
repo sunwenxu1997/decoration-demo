@@ -87,7 +87,7 @@ import BrowserToolbar from './components/BrowserToolbar'
 // 引入预览设置配置
 import { PREVIEW_SETTINGS } from '../../config/settings'
 // 引入纯净预览组件
-import PublishedPreview from '../../../PublishedPreview'
+import PublishedPreview from './components/PublishedPreview'
 
 // 创建组件映射
 const widgetMap = {}

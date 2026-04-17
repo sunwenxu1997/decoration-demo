@@ -32,9 +32,9 @@ import Preview from './bases/Preview/index'
 import Selector from './bases/Selector/index'
 
 // 引入工具函数
-import { generateId } from '@/utils'
+import { generateId } from './utils'
 // 引入组件工具函数
-import { getWidgetDefaultProps } from '@/utils/componentUtils'
+import { getWidgetDefaultProps } from './utils/componentUtils'
 
 export default {
   name: 'DecorationBuilder',

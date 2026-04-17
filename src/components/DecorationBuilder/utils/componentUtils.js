@@ -1,6 +1,6 @@
 // 组件相关工具函数
-import { COMPONENT_TYPES, COMPONENT_METADATA } from '../components/DecorationBuilder/config/componentTypes'
-import { widgets } from '../components/DecorationBuilder/widgets'
+import { COMPONENT_TYPES, COMPONENT_METADATA } from '../config/componentTypes'
+import { widgets } from '../widgets'
 
 /**
  * 根据组件类型获取元数据
