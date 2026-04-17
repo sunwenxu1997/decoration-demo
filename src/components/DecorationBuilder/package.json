@@ -1,0 +1,35 @@
+{
+  "name": "opple-decoration",
+  "version": "1.0.0",
+  "description": "一个具有编辑和预览功能的灵活装饰组件库",
+  "main": "index.js",
+  "module": "index.js",
+  "scripts": {
+    "build:lib": "vue-cli-service build --target lib --name opple-decoration index.js",
+    "lint": "vue-cli-service lint"
+  },
+  "files": [
+    "bases",
+    "config",
+    "styles",
+    "utils",
+    "widgets",
+    "index.js",
+    "index.vue",
+    "README.md"
+  ],
+  "keywords": [
+    "vue",
+    "components",
+    "decoration",
+    "builder",
+    "preview"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "peerDependencies": {
+    "vue": "^2.6.0",
+    "ant-design-vue": "^1.7.0",
+    "vuedraggable": "^2.24.0"
+  }
+}
