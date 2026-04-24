@@ -1,6 +1,6 @@
 {
   "name": "opple-decoration",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "一个具有编辑和预览功能的灵活装饰组件库",
   "main": "index.js",
   "module": "index.js",
