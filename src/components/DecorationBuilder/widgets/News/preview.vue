@@ -1,9 +1,9 @@
 <template>
   <div class="news-component">
-    <h3 class="news-title">{{ data.title || '新闻列表' }}</h3>
+    <h3 class="news-title">{{ initData.title || '新闻列表' }}</h3>
     <div class="news-list">
       <div 
-        v-for="news in data.news" 
+        v-for="news in initData.news" 
         :key="news.id"
         class="news-item"
       >
@@ -22,7 +22,7 @@
           <a-icon type="right" class="news-arrow" />
         </div>
       </div>
-      <div v-if="!data.news || data.news.length === 0" class="empty-news">
+      <div v-if="!initData.news || initData.news.length === 0" class="empty-news">
         暂无新闻数据
       </div>
     </div>
@@ -31,9 +31,9 @@
 
 <script>
 export default {
-  name: 'NewsPreview',
+  name: 'NewsListPreview',
   props: {
-    data: {
+    initData: {
       type: Object,
       default: () => ({
         title: '新闻列表',

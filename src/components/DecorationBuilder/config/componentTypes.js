@@ -7,8 +7,8 @@
  */
 export const COMPONENT_TYPES = {
   // 基础组件
-  BANNER: 'banner',          // 轮播图
-  NEWS_LIST: 'news-list'     // 新闻列表
+  BANNER: 'banner', // 轮播图
+  NEWS_LIST: 'newsList'     // 新闻列表
 }
 
 /**

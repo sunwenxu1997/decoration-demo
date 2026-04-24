@@ -46,7 +46,7 @@
 
 <script>
 export default {
-  name: 'NewsEditor',
+  name: 'NewsListEditor',
   props: {
     component: {
       type: Object,

@@ -1,14 +1,14 @@
 <template>
   <div class="banner-component">
     <a-carousel 
-      v-if="data.images && data.images.length > 0"
-      :autoplay="data.autoPlay"
+      v-if="initData.images && initData.images.length > 0"
+      :autoplay="initData.autoPlay"
       :dots="true"
-      :autoplaySpeed="data.interval"
+      :autoplaySpeed="initData.interval"
       :style="{ height: '200px' }"
     >
       <div 
-        v-for="(image, index) in data.images" 
+        v-for="(image, index) in initData.images" 
         :key="index"
         class="carousel-item"
       >
@@ -37,7 +37,7 @@
 export default {
   name: 'BannerPreview',
   props: {
-    data: {
+    initData: {
       type: Object,
       default: () => ({
         images: [],

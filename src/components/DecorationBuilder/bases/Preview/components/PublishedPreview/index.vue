@@ -2,19 +2,19 @@
   <div class="published-preview-container" >
     <div class="preview-content">
       <div 
-        v-for="element in initialComponents" 
+        v-for="element in initData" 
         :key="element.id"
         class="component-item"
       >
         <div class="component-content">
           <component 
             :is="loadedPreviews[element.type]"
-            :data="element.props"
+            :init-data="element.props"
           />
         </div>
       </div>
       
-      <div v-if="initialComponents.length === 0" class="empty-state">
+      <div v-if="initData.length === 0" class="empty-state">
         <a-icon type="info-circle" :style="{ fontSize: '25px', color: '#ccc' }" />
         <p>暂无页面内容</p>
       </div>
@@ -43,7 +43,7 @@ export default {
   },
   props: {
     // 组件数据数组
-    initialComponents: {
+    initData: {
       type: Array,
       required: true,
       default: () => []

@@ -95,7 +95,7 @@ graph TD
 ```javascript
 export const COMPONENT_TYPES = {
   BANNER: 'banner',          // 轮播图
-  NEWS_LIST: 'news-list'     // 新闻列表
+  NEWS_LIST: 'newsList'     // 新闻列表
 }
 
 export const COMPONENT_METADATA = {

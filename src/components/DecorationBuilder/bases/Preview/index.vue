@@ -32,7 +32,7 @@
               <component 
                 v-if="isComponentLoaded(element.type)"
                 :is="loadedPreviews[element.type]"
-                :data="element.props"
+                :init-data="element.props"
               />
               <div v-else class="loading-component">
                 <a-spin />
@@ -70,7 +70,7 @@
       <!-- 预览模式下的内容 -->
       <PublishedPreview 
         v-else
-        :initial-components="components"
+        :init-data="components"
       />
     </div>
   </div>
@@ -131,7 +131,7 @@ export default {
   computed: {
     previewStyle() {
       // 计算最大允许尺寸，确保不超出窗口
-      const maxWidth = window.innerWidth - 600
+      const maxWidth = window.innerWidth - 100
       const maxHeight = window.innerHeight - 100
       
       // 计算宽高比
@@ -204,9 +204,6 @@ export default {
 
 /* 浏览器样式 */
 .browser-preview {
-  /* 基础样式，具体尺寸由计算属性动态设置 */
-  max-width: calc(100vw - 600px);
-  max-height: calc(100vh - 100px);
   border-radius: 8px;
   background-color: white;
   overflow: hidden;

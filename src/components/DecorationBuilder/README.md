@@ -6,7 +6,7 @@
 
 - ✅ 完整的组件编辑器（支持拖拽排序、属性编辑）
 - ✅ 纯预览组件（用于展示已发布内容）
-- ✅ 独立组件模块（可单独使用的 Banner、News 等组件）
+- ✅ 独立组件模块（可单独使用的 Banner、NewsList 等组件）
 - ✅ 自定义主题支持
 - ✅ 响应式设计
 - ✅ 可调整大小的预览窗口
@@ -50,8 +50,14 @@ import { DecorationBuilder } from 'opple-decoration'
 // 导入纯预览组件
 import { PublishedPreview } from 'opple-decoration'
 
-// 导入组件集合
+// 导入组件集合（数组形式）
 import { widgets } from 'opple-decoration'
+
+// 导入组件对象（直接获取Preview组件，推荐）
+import { widgetComponents } from 'opple-decoration'
+
+// 导入配置
+import { componentTypes } from 'opple-decoration'
 
 // 导入样式
 import 'opple-decoration/lib/opple-decoration.css'
@@ -65,18 +71,20 @@ import 'opple-decoration/lib/opple-decoration.css'
 <template>
   <div class="admin-container">
     <DecorationBuilder 
-      :initial-components="initialComponents"
+      :init-data="initialComponents"
       @update-order="handleUpdateOrder"
       @add-component="handleAddComponent"
       @delete-component="handleDeleteComponent"
       @update-component="handleUpdateComponent"
+      @select-component="handleSelectComponent"
+      @close-editor="handleCloseEditor"
+      @publish="handlePublish"
     />
   </div>
 </template>
 
 <script>
 import { DecorationBuilder } from 'opple-decoration'
-import 'opple-decoration/lib/opple-decoration.css'
 
 export default {
   name: 'AdminDecorationPage',
@@ -113,86 +121,95 @@ export default {
     }
   },
   methods: {
+    /**
+     * 组件排序更新事件
+     * @param {Array} components 更新后的组件数组
+     */
     handleUpdateOrder(components) {
       console.log('组件排序更新:', components)
+      // 保存排序结果到后端
     },
+    
+    /**
+     * 添加组件事件
+     * @param {Object} component 新添加的组件对象
+     */
     handleAddComponent(component) {
       console.log('添加组件:', component)
+      // 保存新组件到后端
     },
+    
+    /**
+     * 删除组件事件
+     * @param {string} componentId 被删除的组件ID
+     */
     handleDeleteComponent(componentId) {
       console.log('删除组件:', componentId)
+      // 从后端删除组件
     },
+    
+    /**
+     * 更新组件属性事件
+     * @param {Object} component 更新后的组件对象
+     */
     handleUpdateComponent(component) {
       console.log('更新组件:', component)
+      // 保存组件更新到后端
+    },
+    
+    /**
+     * 选择组件事件
+     * @param {Object} component 被选中的组件对象
+     */
+    handleSelectComponent(component) {
+      console.log('选择组件:', component)
+      // 处理组件选择逻辑
+    },
+    
+    /**
+     * 关闭编辑器事件
+     */
+    handleCloseEditor() {
+      console.log('关闭编辑器')
+      // 处理关闭编辑器逻辑
+    },
+    
+    /**
+     * 发布事件
+     * @param {Array} components 要发布的组件数组
+     */
+    handlePublish(components) {
+      console.log('发布组件:', components)
+      // 处理发布逻辑，如保存到后端或生成静态文件
     }
   }
 }
 </script>
 ```
-
-### 使用纯预览组件
-
-```vue
-<template>
-  <div class="preview-container">
-    <PublishedPreview 
-      :components="publishedComponents" 
-      :full-screen="true"
-    />
-  </div>
-</template>
-
-<script>
-import { PublishedPreview } from 'opple-decoration'
-import 'opple-decoration/lib/opple-decoration.css'
-
-export default {
-  name: 'PagePreview',
-  components: {
-    PublishedPreview
-  },
-  data() {
-    return {
-      publishedComponents: [] // 从后端获取的已发布组件数据
-    }
-  },
-  created() {
-    this.fetchPublishedComponents()
-  },
-  methods: {
-    async fetchPublishedComponents() {
-      // 模拟从后端获取数据
-      const response = await fetch('/api/published-components')
-      this.publishedComponents = await response.json()
-    }
-  }
-}
-</script>
-```
-
 ### 使用单个组件
+
+#### 方式1：通过widgetComponents直接导入（推荐）
 
 ```vue
 <template>
   <div class="custom-page">
-    <BannerPreview :data="bannerData" />
-    <NewsPreview :data="newsData" />
+    <BannerPreview :init-data="bannerData" />
+    <NewsListPreview :init-data="newsData" />
   </div>
 </template>
 
 <script>
-import { widgets } from 'opple-decoration'
+import { widgetComponents } from 'opple-decoration'
 import 'opple-decoration/lib/opple-decoration.css'
 
 // 提取所需的组件
-const BannerPreview = widgets.Banner.Preview
-const NewsPreview = widgets.News.Preview
+const { BannerPreview, NewsListPreview } = widgetComponents
 
 export default {
   name: 'CustomPage',
   components: {
     BannerPreview,
-    NewsPreview
+    NewsListPreview
   },
   data() {
     return {
@@ -217,37 +234,19 @@ export default {
 </script>
 ```
 
-## 组件数据结构
+## 组件事件
 
-### 完整编辑器组件数据结构
+### DecorationBuilder 事件列表
 
-```javascript
-[
-  {
-    id: 'banner-1', // 组件唯一标识
-    type: 'banner', // 组件类型
-    props: { // 组件属性
-      images: [
-        { url: '图片URL', link: '链接URL' },
-        { url: '图片URL', link: '链接URL' }
-      ],
-      autoPlay: true,
-      interval: 3000
-    }
-  },
-  {
-    id: 'news-1',
-    type: 'news-list',
-    props: {
-      title: '最新资讯',
-      news: [
-        { id: 1, title: '新闻标题', date: '2026-04-01', link: '链接URL' },
-        { id: 2, title: '新闻标题', date: '2026-04-02', link: '链接URL' }
-      ]
-    }
-  }
-]
-```
+| 事件名称 | 描述 | 参数 |
+|---------|------|------|
+| update-order | 组件排序发生变化时触发 | `components`：更新后的组件数组 |
+| add-component | 添加新组件时触发 | `component`：新添加的组件对象 |
+| delete-component | 删除组件时触发 | `componentId`：被删除的组件ID |
+| update-component | 更新组件属性时触发 | `component`：更新后的组件对象 |
+| select-component | 选择组件时触发 | `component`：被选中的组件对象 |
+| close-editor | 关闭编辑器时触发 | 无 |
+| publish | 点击发布按钮时触发 | `components`：要发布的组件数组 |
 
 ## 主题配置
 

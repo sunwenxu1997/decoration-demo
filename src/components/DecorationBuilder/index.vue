@@ -46,7 +46,7 @@ export default {
   },
   props: {
     // 初始组件数据，用于页面初始化渲染
-    initialComponents: {
+    initData: {
       type: Array,
       default: () => []
     }
@@ -59,8 +59,8 @@ export default {
   },
   created() {
     // 如果有初始数据，复制到组件列表中
-    if (this.initialComponents && this.initialComponents.length > 0) {
-      this.components = [...this.initialComponents]
+    if (this.initData && this.initData.length > 0) {
+      this.components = [...this.initData]
     }
   },
   computed: {
@@ -92,10 +92,12 @@ export default {
         this.components.push(newComponent)
       }
       this.selectedComponentId = newComponent.id
+      this.$emit('add-component', newComponent)
     },
     
     handleSelectComponent(componentId) {
       this.selectedComponentId = componentId
+      this.$emit('select-component', componentId)
     },
     
     handleDeleteComponent(componentId) {
@@ -106,10 +108,12 @@ export default {
           this.selectedComponentId = null
         }
       }
+      this.$emit('delete-component', componentId)
     },
     
     handleUpdateOrder(newComponents) {
       this.components = newComponents
+      this.$emit('update-order', newComponents)
     },
     
     handleUpdateComponent(updatedComponent) {
@@ -117,19 +121,19 @@ export default {
       if (index > -1) {
         this.components.splice(index, 1, updatedComponent)
       }
+      this.$emit('update-component', updatedComponent)
     },
     closeEditor() {
       // 关闭编辑器（取消选中组件）
       this.selectedComponentId = null
       // 关闭左侧组件选择框
       this.$refs.selector.closeSelector()
+      this.$emit('close-editor')
     },
     
     handlePublish() {
       // 处理发布逻辑
-      console.log('发布组件内容:', this.components)
-      // 这里可以添加发布到服务器的逻辑
-      alert('组件已发布！')
+      this.$emit('publish', this.components)
     }
   }
 }
