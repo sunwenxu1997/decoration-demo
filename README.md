@@ -85,6 +85,7 @@ graph TD
 ### 4. Selector (组件选择器)
 - 文件：`src/components/DecorationBuilder/bases/Selector/index.vue`
 - 功能：展示所有可用组件，支持选择组件添加到预览区
+- 目录说明请参考[自定义组件开发](./src/components/DecorationBuilder/widgets/README.md)
 
 ## 配置文件说明
 
