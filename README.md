@@ -34,7 +34,7 @@ src/
 │       │   └── settings.js         # 全局设置
 │       ├── widgets/                # 自定义组件
 │       │   ├── Banner/             # 轮播图组件
-│       │   ├── News/               # 新闻列表组件
+│       │   ├── NewsList/               # 新闻列表组件
 │       │   └── index.js            # 组件注册表
 │       └── index.vue               # 装修工具主入口
 └── utils/
@@ -61,7 +61,7 @@ graph TD
     C --> M[settings.js]
     
     D --> N[Banner]
-    D --> O[News]
+    D --> O[NewsList]
     D --> P[index.js]
 ```
 
@@ -137,7 +137,7 @@ export const PREVIEW_SETTINGS = {
 | 组件类型 | 组件名称 | 预览组件 | 编辑组件 |
 |---------|---------|---------|---------|
 | banner  | 轮播图   | BannerPreview | BannerEditor |
-| news-list | 新闻列表 | NewsPreview | NewsEditor |
+| newsList | 新闻列表 | NewsListPreview | NewsListEditor |
 
 ## 数据格式说明
 
@@ -161,7 +161,7 @@ export const PREVIEW_SETTINGS = {
   },
   {
     "id": "0987654321",
-    "type": "news-list",
+    "type": "newsList",
     "props": {
       "title": "最新资讯",
       "news": [
@@ -308,12 +308,12 @@ export const COMPONENT_METADATA = {
 
 ```javascript
 import BannerComponent from './Banner'
-import NewsComponent from './News'
+import NewsListComponent from './NewsList'
 import NotificationBannerComponent from './NotificationBanner'  // 导入新组件
 
 export const widgets = [
   BannerComponent,
-  NewsComponent,
+  NewsListComponent,
   NotificationBannerComponent  // 注册新组件
 ]
 ```

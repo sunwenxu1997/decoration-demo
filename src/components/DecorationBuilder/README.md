@@ -108,7 +108,7 @@ export default {
         },
         {
           id: 'news-1',
-          type: 'news-list',
+          type: 'newsList',
           props: {
             title: '最新资讯',
             news: [
