@@ -3,7 +3,7 @@
     <!-- 组件选择器面板 -->
     <div class="component-selector" :class="{ 'expanded': isExpanded }">
       <!-- 展开/收缩按钮 -->
-      <div class="toggle-btn" @click="isExpanded = !isExpanded" :title="isExpanded ? '收起组件列表' : '展开组件列表'">
+      <div class="toggle-btn" @click="handleToggle" :title="isExpanded ? '收起组件列表' : '展开组件列表'">
         <a-icon :type="isExpanded ? 'left' : 'right'" />
       </div>
 
@@ -23,6 +23,8 @@
           <a-icon v-else class="component-icon" :type="component.icon" />
         </div>
       </div>
+      <!-- 素材选择器 -->
+      <MaterialSelector ref="materialSelector" :isExpanded="isExpanded" @toggle="isExpanded = $event" />
     </div>
   </div>
 </template>
@@ -32,9 +34,14 @@
 import { COMPONENT_METADATA } from '../../config/componentTypes'
 // 引入组件工具函数
 import { getAllComponentTypes } from '../../utils/componentUtils'
+// 引入素材选择器组件
+import MaterialSelector from './components/MaterialSelector'
 
 export default {
   name: 'ComponentSelector',
+  components: {
+    MaterialSelector
+  },
   data() {
     return {
       isExpanded: false // 控制组件选择器的展开/收缩状态
@@ -55,6 +62,9 @@ export default {
     handleSelectComponent(componentType) {
       this.$emit('select-component', componentType)
     },
+    handleToggle() {
+      this.isExpanded = !this.isExpanded
+    },
     closeSelector() {
       this.isExpanded = false
     }
@@ -67,6 +77,8 @@ export default {
 .component-selector-container {
   display: flex;
   align-items: stretch;
+  /* 左侧选择框尺寸 */
+  --component-selector-width: 250px;
 }
 
 /* 组件选择器面板 */
@@ -154,7 +166,7 @@ export default {
 
 /* 展开状态 */
 .component-selector.expanded {
-  width: 250px;
+  width: var(--component-selector-width);
 }
 
 .component-selector.expanded .component-list {
