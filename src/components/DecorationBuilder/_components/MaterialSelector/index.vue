@@ -1,5 +1,5 @@
 <template>
-    <div class="material-selector" title="已选择素材">
+    <div class="material-selector">
         <div class="material-list" v-if="isOpened">
             <div v-for="material in selectedMaterials" :key="material.id" class="selected-material">
                 <!-- 图片预览 -->
@@ -25,14 +25,14 @@
             </div>
         </div>
         <div class="material-header-container">
-            <div class="material-header" :class="{ 'expanded': isOpened }" @click="handleToggle">
+            <div class="material-header" :class="{ 'expanded': isOpened }" @click="handleToggle"  title="已选择素材">
                 <a-icon type="folder-open" class="folder-icon" />
                 <!-- 已选数量提示 -->
                 <div v-if="selectedMaterials.length > 0" class="selected-count">
                     {{ selectedMaterials.length > 99 ? '99+' : selectedMaterials.length }}
                 </div>
             </div>
-            <div v-if="isExpanded" class="material-add" @click="openMaterialsPage">
+            <div v-if="isExpanded" class="material-add" @click="openMaterialsPage" title="添加素材">
                 <a-icon type="plus" />
             </div>
         </div>
@@ -79,7 +79,8 @@ export default {
     methods: {
         // 打开素材列表页面
         openMaterialsPage() {
-            window.open('/example', '_blank')
+            // window.open('/example', '_blank')
+            this.$emit('add', this.selectedMaterials)
         },
         // 复制素材URL到剪贴板
         async copyMaterialUrl(url) {
@@ -96,14 +97,12 @@ export default {
         viewMaterial(url) {
             // 在新窗口中打开图片
             window.open(url, '_blank')
+            this.$emit('view', url)
         },
         // 移除素材
         removeMaterial(id) {
             this.selectedMaterials = this.selectedMaterials.filter(material => material.id !== id)
-        },
-        // 处理素材更新事件
-        handleMaterialsUpdated(event) {
-            this.selectedMaterials = event.detail.selectedMaterials || []
+            this.$emit('remove', id)
         },
         // 处理切换素材选择器状态
         handleToggle() {

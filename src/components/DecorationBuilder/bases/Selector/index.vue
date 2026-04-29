@@ -35,7 +35,7 @@ import { COMPONENT_METADATA } from '../../config/componentTypes'
 // 引入组件工具函数
 import { getAllComponentTypes } from '../../utils/componentUtils'
 // 引入素材选择器组件
-import MaterialSelector from './components/MaterialSelector'
+import MaterialSelector from '../../_components/MaterialSelector'
 
 export default {
   name: 'ComponentSelector',

@@ -81,13 +81,13 @@ import draggable from 'vuedraggable'
 // 引入组件注册表
 import { widgets } from '../../widgets'
 // 引入尺寸编辑器组件
-import SizeEditor from './components/SizeEditor'
+import SizeEditor from '../../_components/SizeEditor'
 // 引入工具栏组件
-import BrowserToolbar from './components/BrowserToolbar'
+import BrowserToolbar from '../../_components/BrowserToolbar'
 // 引入预览设置配置
 import { PREVIEW_SETTINGS } from '../../config/settings'
 // 引入纯净预览组件
-import PublishedPreview from './components/PublishedPreview'
+import PublishedPreview from '../../_components/PublishedPreview'
 
 // 创建组件映射
 const widgetMap = {}

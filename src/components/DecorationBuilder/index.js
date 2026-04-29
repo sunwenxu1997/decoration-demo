@@ -7,7 +7,7 @@ import './styles/main.css'
 import DecorationBuilder from './index.vue'
 
 // 导出纯预览组件
-import PublishedPreview from './bases/Preview/components/PublishedPreview'
+import PublishedPreview from './_components/PublishedPreview'
 
 // 导出配置
 import * as componentTypes from './config/componentTypes'

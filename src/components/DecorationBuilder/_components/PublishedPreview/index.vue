@@ -24,7 +24,7 @@
 
 <script>
 // 引入组件注册表
-import { widgets } from '../../../../widgets'
+import { widgets } from '../../widgets'
 
 // 创建组件映射
 const widgetMap = {}

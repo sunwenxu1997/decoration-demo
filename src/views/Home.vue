@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <DecorationBuilder 
-     :init-data="initialComponents" 
+     :init-data="initialComponents"
      @add-component="handleAddComponent"
      @delete-component="handleDeleteComponent"
      @update-component="handleUpdateComponent"
@@ -9,7 +9,9 @@
      @close-editor="handleCloseEditor"
      @publish="handlePublish"
      @update-order="handleUpdateOrder"
-     />
+     >
+
+    </DecorationBuilder>
   </div>
 </template>
 
