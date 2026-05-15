@@ -74,7 +74,8 @@ export default {
         value:{
             handler(newVal) {
                 if (newVal.length > 0) {
-                    manager.get().addBatch(newVal)
+                    manager.get().setSelected(newVal)
+                    this.syncMaterials = newVal
                 }
             },
             immediate: true
@@ -85,7 +86,7 @@ export default {
         // 使用props作为数据源，保持组件受控
         selectedMaterials:{
             get() {
-                return this.syncMaterials.length > 0 ? this.syncMaterials : this.value
+                return this.syncMaterials
             },
             set(val) {
                 this.$emit('update:value', val)

@@ -59,6 +59,10 @@ class MaterialSelection {
   getSelected() {
     return [...this.list]
   }
+  setSelected(materials) {
+    this.list = [...materials]
+    this._notify()
+  }
 
   add(material) {
     if (!material || !material.id) return false
