@@ -80,8 +80,8 @@ export default {
       console.log('发布组件:', components);
     },
     handleSelectMaterialOpen() {
-      // 打开新页面路由
-      window.open('#/materials', '_blank')
+      // 打开素材选择页面，如果已打开则跳转到该页签
+      window.open('#/materials', 'materials-selector')
     }
   }
 }
