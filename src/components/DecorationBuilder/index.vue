@@ -51,10 +51,21 @@ export default {
       default: () => []
     }
   },
+  provide() {
+    return {
+      builderContext: this.context
+    }
+  },
   data() {
     return {
       components: [],
-      selectedComponentId: null
+      selectedComponentId: null,
+      // 组件统一上下文
+      context: {
+        emit: (eventName, ...args) => {
+          this.$emit(eventName, ...args)
+        }
+      }
     }
   },
   created() {

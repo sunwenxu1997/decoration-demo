@@ -12,7 +12,12 @@ const routes = [
     path: '/example',
     name: 'ExampleView',
     component: () => import('@/views/Example.vue'),
-  }
+  },
+  {
+    path: '/materials',
+    name: 'MaterialsView',
+    component: () => import('@/views/Materials.vue'),
+  },
 ]
 
 const createRouter = () => new Router({

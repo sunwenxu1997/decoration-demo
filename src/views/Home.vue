@@ -9,6 +9,7 @@
      @close-editor="handleCloseEditor"
      @publish="handlePublish"
      @update-order="handleUpdateOrder"
+     @material-selector-open="handleSelectMaterialOpen"
      >
 
     </DecorationBuilder>
@@ -77,6 +78,10 @@ export default {
     },
     handlePublish(components) {
       console.log('发布组件:', components);
+    },
+    handleSelectMaterialOpen() {
+      // 打开新页面路由
+      window.open('#/materials', '_blank')
     }
   }
 }

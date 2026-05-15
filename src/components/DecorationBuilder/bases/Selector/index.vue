@@ -24,7 +24,8 @@
         </div>
       </div>
       <!-- 素材选择器 -->
-      <MaterialSelector ref="materialSelector" :isExpanded="isExpanded" @toggle="isExpanded = $event" />
+      <MaterialSelector v-model="selectedMaterials" ref="materialSelector" :isExpanded="isExpanded"
+        @toggle="isExpanded = $event" />
     </div>
   </div>
 </template>
@@ -44,6 +45,12 @@ export default {
   },
   data() {
     return {
+      selectedMaterials: [
+        { id: 11, name: 'OLL 界 Edge 移动台灯1515', thumbnail: 'https://cmp-bucket-prod.obs.cn-east-3.myhuaweicloud.com/cmp/image/original/20260514/fd2cf2e0-4f87-45e6-8db1-5afe75ab491b.jpg?x-image-process=style/thumbnail', url: 'https://cmp-bucket-prod.obs.cn-east-3.myhuaweicloud.com/cmp/image/original/20260514/fd2cf2e0-4f87-45e6-8db1-5afe75ab491b.jpg' },
+        { id: 3, name: 'OLL 界Edge 金属落地灯1500（SDL)3', thumbnail: 'https://cmp-bucket-prod.obs.cn-east-3.myhuaweicloud.com/cmp/image/original/20260514/2fa66a15-5826-42f4-8d6d-c265e737ba3f.jpg?x-image-process=style/thumbnail', url: 'https://cmp-bucket-prod.obs.cn-east-3.myhuaweicloud.com/cmp/image/original/20260514/2fa66a15-5826-42f4-8d6d-c265e737ba3f.jpg' },
+        { id: 13, name: 'INK系列-OLL品牌-2025年-产品图片47', thumbnail: 'https://cmp-bucket-prod.obs.cn-east-3.myhuaweicloud.com/cmp/image/original/20260317/feaa3133-d66d-4c3f-9810-a95791153ff5.jpg?x-image-process=style/thumbnail', url: 'https://cmp-bucket-prod.obs.cn-east-3.myhuaweicloud.com/cmp/image/original/20260317/feaa3133-d66d-4c3f-9810-a95791153ff5.jpg' },
+        { id: 14, name: 'INK系列-OLL品牌-2025年-产品图片35', thumbnail: 'https://cmp-bucket-prod.obs.cn-east-3.myhuaweicloud.com/cmp/image/original/20260317/f5dadbc7-c92c-4642-952d-8bf814141c19.jpg?x-image-process=style/thumbnail', url: 'https://cmp-bucket-prod.obs.cn-east-3.myhuaweicloud.com/cmp/image/original/20260317/f5dadbc7-c92c-4642-952d-8bf814141c19.jpg' },
+      ], // 选中的素材列表
       isExpanded: false // 控制组件选择器的展开/收缩状态
     }
   },

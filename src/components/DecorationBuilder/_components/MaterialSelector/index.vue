@@ -1,51 +1,68 @@
 <template>
     <div class="material-selector">
         <div class="material-list" v-if="isOpened">
-            <div v-for="material in selectedMaterials" :key="material.id" class="selected-material">
+            <div v-for="material in selectedMaterials" :key="getField(material, 'id')" class="selected-material">
                 <!-- 图片预览 -->
                 <div class="material-preview">
-                    <img class="material-image" :src="material.url" alt="素材预览" />
+                    <img class="material-image" :src="getImageUrl(material)" alt="素材预览" />
                     <!-- 悬浮操作按钮 -->
                     <div class="material-actions">
-                        <div class="action-btn" @click.stop="viewMaterial(material.url)" title="查看图片">
+                        <div class="action-btn" @click.stop="view(getField(material, 'url'))" title="查看图片">
                             <a-icon type="eye" />
                         </div>
-                        <div class="action-btn" @click.stop="copyMaterialUrl(material.url)" title="复制URL">
+                        <div class="action-btn" @click.stop="copyUrl(getImageUrl(material))" title="复制URL">
                             <a-icon type="copy" />
                         </div>
-                        <div class="action-btn" :title="`${material.name}`">
+                        <div class="action-btn" :title="`${getField(material, 'name')}`">
                             <a-icon type="info-circle" />
                         </div>
                         <!-- 移除 -->
-                        <div class="action-btn" @click.stop="removeMaterial(material.id)" title="移除">
+                        <div class="action-btn" @click.stop="remove(getField(material, 'id'))" title="移除">
                             <a-icon type="delete" />
                         </div>
                     </div>
                 </div>
             </div>
+            <div v-if="selectedMaterials.length === 0" class="no-materials">暂无已选择素材</div>
         </div>
         <div class="material-header-container">
-            <div class="material-header" :class="{ 'expanded': isOpened }" @click="handleToggle"  title="已选择素材">
-                <a-icon type="folder-open" class="folder-icon" />
+            <div class="material-header" :class="{ 'expanded': isOpened }" @click="toggle" title="已选择素材">
+                <a-icon v-if="isOpened" type="folder-open" class="folder-icon" />
+                <a-icon v-else type="folder"  class="folder-icon" />
                 <!-- 已选数量提示 -->
                 <div v-if="selectedMaterials.length > 0" class="selected-count">
                     {{ selectedMaterials.length > 99 ? '99+' : selectedMaterials.length }}
                 </div>
             </div>
-            <div v-if="isExpanded" class="material-add" @click="openMaterialsPage" title="添加素材">
+            <div v-if="isExpanded" class="material-add" @click="open" title="添加素材">
                 <a-icon type="plus" />
             </div>
         </div>
     </div>
 </template>
-
 <script>
+import { manager } from '../../utils/materials'
 export default {
     name: 'MaterialSelector',
     props: {
         isExpanded: {
             type: Boolean,
             default: false
+        },
+        // 受控属性，用于同步父组件的已选素材列表
+        value: {
+            type: Array,
+            default: () => []
+        },
+        // 字段映射配置，允许用户自定义数据字段的key
+        options: {
+            type: Object,
+            default: () => ({
+                id: 'id',           // 素材唯一标识字段
+                url: 'url',         // 素材预览/访问地址字段
+                name: 'name',       // 素材名称字段
+                thumbnail: 'thumbnail' // 缩略图地址字段（优先使用）
+            })
         }
     },
     watch: {
@@ -53,37 +70,66 @@ export default {
             if (!newVal) {
                 this.isOpened = false
             }
+        },
+        value:{
+            handler(newVal) {
+                if (newVal.length > 0) {
+                    manager.get().addBatch(newVal)
+                }
+            },
+            immediate: true
         }
     },
+
+    computed: {
+        // 使用props作为数据源，保持组件受控
+        selectedMaterials:{
+            get() {
+                return this.syncMaterials.length > 0 ? this.syncMaterials : this.value
+            },
+            set(val) {
+                this.$emit('update:value', val)
+            }
+        }
+    },
+    inject: ['builderContext'],
     data() {
         return {
+            // manager 实例，用于监听素材变化
+            managerContext: manager.get(),
             isOpened: false, // 是否打开素材列表状态
-            selectedMaterials: [
-                { id: 1, name: '轮播图1', url: 'https://picsum.photos/800/450?random=1' },
-                { id: 2, name: '轮播图2', url: 'https://picsum.photos/800/450?random=12' },
-                { id: 3, name: '轮播图1', url: 'https://picsum.photos/800/450?random=11' },
-                { id: 4, name: '轮播图2', url: 'https://picsum.photos/800/450?random=112' },
-                { id: 5, name: '轮播图1', url: 'https://picsum.photos/800/450?random=111' },
-                { id: 6, name: '轮播图2', url: 'https://picsum.photos/800/450?random=23' },
-                { id: 7, name: '轮播图1', url: 'https://picsum.photos/800/450?random=14' },
-                { id: 8, name: '轮播图2', url: 'https://picsum.photos/800/450?random=25' },
-                { id: 9, name: '轮播图1', url: 'https://picsum.photos/800/450?random=16' },
-                { id: 10, name: '轮播图2', url: 'https://picsum.photos/450/450?random=27' },
-                { id: 11, name: '轮播图1', url: 'https://picsum.photos/800/450?random=189' },
-                { id: 12, name: '轮播图2', url: 'https://picsum.photos/800/450?random=290' },
-                { id: 13, name: '轮播图1', url: 'https://picsum.photos/800/450?random=10' },
-                { id: 14, name: '轮播图2', url: 'https://picsum.photos/800/450?random=22' },
-            ] // 已选择的素材列表
+            syncMaterials: []
         }
     },
+    mounted() {
+        this.managerContext.onChange((materials) => {
+            console.log('跨页签素材变化:', materials);
+            this.syncMaterials = materials
+            // this.$set(this, 'selectedMaterials', materials);
+        })
+    },
     methods: {
-        // 打开素材列表页面
-        openMaterialsPage() {
-            // window.open('/example', '_blank')
-            this.$emit('add', this.selectedMaterials)
+        // 获取素材字段值（支持字段映射）
+        getField(material, fieldName) {
+            const key = this.options[fieldName] || fieldName
+            return material[key]
         },
+
+        // 获取图片预览地址（优先thumbnail，最后url）
+        getImageUrl(material) {
+            const thumbnail = this.getField(material, 'thumbnail')
+            const url = this.getField(material, 'url')
+            return thumbnail || url || ''
+        },
+
+        // 打开素材列表页面
+        open() {
+            this.$emit('material-selector-open', this.selectedMaterials)
+            this.builderContext.emit('material-selector-open', this.selectedMaterials)
+        },
+
         // 复制素材URL到剪贴板
-        async copyMaterialUrl(url) {
+        async copyUrl(url) {
             try {
                 await navigator.clipboard.writeText(url)
                 this.$message.success('URL已复制到剪贴板')
@@ -94,18 +140,24 @@ export default {
         },
 
         // 查看图片
-        viewMaterial(url) {
-            // 在新窗口中打开图片
+        view(url) {
             window.open(url, '_blank')
             this.$emit('view', url)
         },
-        // 移除素材
-        removeMaterial(id) {
-            this.selectedMaterials = this.selectedMaterials.filter(material => material.id !== id)
-            this.$emit('remove', id)
+
+        // 移除素材（支持字段映射）
+        remove(id) {
+            const idx = this.selectedMaterials.findIndex(
+                material => this.getField(material, 'id') === id
+            )
+            if (idx !== -1) {
+                const material = this.selectedMaterials[idx]
+                this.managerContext.remove(material)
+                this.$emit('remove', id)
+            }
         },
         // 处理切换素材选择器状态
-        handleToggle() {
+        toggle() {
             this.isOpened = !this.isOpened
             this.$emit('toggle', true)
         }
@@ -190,7 +242,7 @@ export default {
 .material-list {
     position: absolute;
     width: 100%;
-    max-height: 100vh;
+    height: 100%;
     background-color: white;
     border-radius: 4px;
     padding: 5px;
@@ -198,6 +250,14 @@ export default {
     top: 0px;
     left: 0px;
     overflow-y: auto;
+}
+.no-materials {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    color: #999;
 }
 
 /* 自定义滚动条 */
@@ -220,9 +280,8 @@ export default {
 }
 
 .material-image {
-    width: 100%;
-    height: 100%;
-    max-height: 200px;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: cover;
 }
 
