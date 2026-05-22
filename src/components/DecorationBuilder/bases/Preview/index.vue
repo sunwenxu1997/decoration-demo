@@ -26,6 +26,7 @@
             :key="element.id"
             class="component-item"
             :class="{ 'component-selected': element.id === selectedComponentId }"
+            :style="getComponentStyle(element)"
             @click.stop="handleSelectComponent(element.id)"
           >
             <div class="component-content">
@@ -189,6 +190,16 @@ export default {
       this.isPreviewing = isPreviewing
       this.$emit('close-editor')
     },
+    // 获取组件的间距样式
+    getComponentStyle(element) {
+      const style = element.style || {}
+      return {
+        paddingTop: `${style.paddingTop || 0}px`,
+        paddingBottom: `${style.paddingBottom || 0}px`,
+        paddingLeft: `${style.paddingLeft || 0}px`,
+        paddingRight: `${style.paddingRight || 0}px`
+      }
+    }
   }
 }
 </script>

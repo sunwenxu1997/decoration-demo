@@ -5,6 +5,7 @@
         v-for="element in initData" 
         :key="element.id"
         class="component-item"
+        :style="getComponentStyle(element)"
       >
         <div class="component-content">
           <component 
@@ -52,6 +53,18 @@ export default {
   data() {
     return {
       loadedPreviews: widgetMap
+    }
+  },
+  methods: {
+    // 获取组件的间距样式
+    getComponentStyle(element) {
+      const style = element.style || {}
+      return {
+        paddingTop: `${style.paddingTop || 0}px`,
+        paddingBottom: `${style.paddingBottom || 0}px`,
+        paddingLeft: `${style.paddingLeft || 0}px`,
+        paddingRight: `${style.paddingRight || 0}px`
+      }
     }
   }
 }

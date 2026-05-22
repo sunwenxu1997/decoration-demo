@@ -40,6 +40,16 @@ export const COMPONENT_SETTINGS = {
 }
 
 /**
+ * 组件默认间距样式
+ */
+export const DEFAULT_COMPONENT_STYLE = {
+  paddingTop: 0,
+  paddingBottom: 0,
+  paddingLeft: 0,
+  paddingRight: 0
+}
+
+/**
  * 编辑器相关设置
  */
 export const EDITOR_SETTINGS = {
@@ -60,5 +70,6 @@ export default {
   PREVIEW: PREVIEW_SETTINGS,
   DRAG: DRAG_SETTINGS,
   COMPONENT: COMPONENT_SETTINGS,
-  EDITOR: EDITOR_SETTINGS
+  EDITOR: EDITOR_SETTINGS,
+  DEFAULT_COMPONENT_STYLE
 }

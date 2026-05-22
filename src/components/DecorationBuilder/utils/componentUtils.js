@@ -1,5 +1,6 @@
 // 组件相关工具函数
 import { COMPONENT_TYPES, COMPONENT_METADATA } from '../config/componentTypes'
+import { DEFAULT_COMPONENT_STYLE } from '../config/settings'
 import { widgets } from '../widgets'
 
 /**
@@ -86,4 +87,25 @@ export const getWidgetPreview = (type) => {
 export const getWidgetEditor = (type) => {
   const config = getWidgetConfig(type)
   return config ? config.Editor : null
+}
+
+/**
+ * 根据组件类型生成默认间距样式
+ * 从 DEFAULT_COMPONENT_STYLE 中取值，支持 enableSpacing 配置过滤方向
+ * @param {string} type 组件类型
+ * @returns {Object|null} 间距样式对象，未启用则返回 null
+ */
+export const getWidgetDefaultStyle = (type) => {
+  const config = getWidgetConfig(type)
+  const enableSpacing = config && config.enableSpacing
+  if (!enableSpacing) return null
+
+  // enableSpacing 为 true 时从 DEFAULT_COMPONENT_STYLE 取全部方向
+  // enableSpacing 为数组时只取指定方向，如 ['paddingTop', 'paddingBottom']
+  const dirs = Array.isArray(enableSpacing) ? enableSpacing : Object.keys(DEFAULT_COMPONENT_STYLE)
+  const style = {}
+  dirs.forEach(d => {
+    style[d] = DEFAULT_COMPONENT_STYLE[d] !== undefined ? DEFAULT_COMPONENT_STYLE[d] : 0
+  })
+  return style
 }

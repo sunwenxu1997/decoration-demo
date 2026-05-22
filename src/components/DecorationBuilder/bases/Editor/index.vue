@@ -1,6 +1,9 @@
 <template>
   <div class="property-editor">
     <div class="property-content">
+      <!-- 通用间距编辑器（仅当组件配置了enableSpacing时展示） -->
+      <SpacingEditor v-if="isSpacingEnabled" v-model="localComponent.style" />
+      <!-- 组件专属编辑器 -->
       <component 
         v-if="currentEditor"
         :is="currentEditor"
@@ -23,16 +26,23 @@
 import { widgets } from '../../widgets'
 // 引入工具函数
 import { deepClone } from '../../utils'
+// 引入通用间距编辑器
+import SpacingEditor from '../../_components/SpacingEditor'
 
 // 创建编辑器组件映射
 const editorMap = {}
+// 创建组件配置映射（用于查找enableSpacing等配置）
+const widgetConfigMap = {}
 widgets.forEach(widget => {
   editorMap[widget.type] = widget.Editor
+  widgetConfigMap[widget.type] = widget
 })
 
 export default {
   name: 'PropertyEditor',
   components: {
+    // 注册通用组件
+    SpacingEditor,
     // 注册所有编辑器组件
     ...widgets.reduce((acc, widget) => {
       acc[widget.Editor.name] = widget.Editor
@@ -59,6 +69,14 @@ export default {
       },
       deep: true,
       immediate: true
+    }
+  },
+  computed: {
+    // 当前组件是否启用间距配置
+    isSpacingEnabled() {
+      const type = this.localComponent.type
+      const widgetConfig = widgetConfigMap[type]
+      return !!(widgetConfig && widgetConfig.enableSpacing)
     }
   },
   methods: {

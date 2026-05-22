@@ -34,7 +34,7 @@ import Selector from './bases/Selector/index'
 // 引入工具函数
 import { generateId } from './utils'
 // 引入组件工具函数
-import { getWidgetDefaultProps } from './utils/componentUtils'
+import { getWidgetDefaultProps, getWidgetDefaultStyle } from './utils/componentUtils'
 
 export default {
   name: 'DecorationBuilder',
@@ -81,11 +81,16 @@ export default {
   },
   methods: {
     handleAddComponent(componentType) {
+      // 从组件配置中获取默认间距样式
+      const style = getWidgetDefaultStyle(componentType)
+      
       const newComponent = {
         id: generateId(),
         type: componentType,
         // 从组件配置中获取默认属性
-        props: getWidgetDefaultProps(componentType)
+        props: getWidgetDefaultProps(componentType),
+        // 仅当组件启用间距配置时注入style字段
+        ...(style ? { style } : {})
       }
       
       // 检查是否需要在选中组件后面插入

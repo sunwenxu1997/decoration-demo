@@ -10,6 +10,8 @@ export default {
   Preview: NewsPreview,
   // 编辑组件
   Editor: NewsEditor,
+  // 是否启用通用间距配置
+  enableSpacing: true,
   // 默认属性配置
   defaultProps: {
     title: '最新资讯',
