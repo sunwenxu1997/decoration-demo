@@ -8,7 +8,8 @@
 export const COMPONENT_TYPES = {
   // 基础组件
   BANNER: 'banner', // 轮播图
-  NEWS_LIST: 'newsList'     // 新闻列表
+  NEWS_LIST: 'newsList',     // 新闻列表
+  ANCHOR: 'anchor'      // 锚点导航
 }
 
 /**
@@ -26,6 +27,12 @@ export const COMPONENT_METADATA = {
     name: '新闻列表',
     description: '展示最新资讯或文章列表，支持标题和日期显示',
     icon: 'file-text',
+    category: '基础组件'
+  },
+  [COMPONENT_TYPES.ANCHOR]: {
+    name: '锚点导航',
+    description: '页面内锚点导航，点击可滚动到对应组件位置，支持吸顶效果',
+    icon: 'border-top',
     category: '基础组件'
   }
 }

@@ -5,7 +5,9 @@
         v-for="element in initData" 
         :key="element.id"
         class="component-item"
+        :class="{ 'component-item--sticky-allowed': isStickyEnabled(element) }"
         :style="getComponentStyle(element)"
+        :data-component-id="element.id"
       >
         <div class="component-content">
           <component 
@@ -56,6 +58,10 @@ export default {
     }
   },
   methods: {
+    // 判断组件是否启用了sticky吸顶（如锚点导航）
+    isStickyEnabled(element) {
+      return element.props && element.props.sticky
+    },
     // 获取组件的间距样式
     getComponentStyle(element) {
       const style = element.style || {}
@@ -102,6 +108,14 @@ export default {
 .component-item {
   width: 100%;
   box-sizing: border-box;
+}
+
+/* 允许子组件使用sticky定位（如锚点导航吸顶） */
+.component-item--sticky-allowed {
+  overflow: visible !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1 !important;
 }
 
 .component-content {

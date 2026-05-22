@@ -3,14 +3,17 @@
 
 import BannerComponent from './Banner'
 import NewsListComponent from './NewsList'
+import AnchorComponent from './Anchor'
 
 // 组件数组，包含所有可用组件的配置信息
 export const widgets = [
   BannerComponent,
-  NewsListComponent
+  NewsListComponent,
+  AnchorComponent
 ]
 
 export const widgetComponents = {
   BannerPreview: BannerComponent.Preview,
   NewsListPreview: NewsListComponent.Preview,
+  AnchorPreview: AnchorComponent.Preview,
 }

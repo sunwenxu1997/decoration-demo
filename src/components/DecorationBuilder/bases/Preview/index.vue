@@ -25,8 +25,12 @@
             v-for="element in components" 
             :key="element.id"
             class="component-item"
-            :class="{ 'component-selected': element.id === selectedComponentId }"
+            :class="{ 
+              'component-selected': element.id === selectedComponentId,
+              'component-item--sticky-allowed': isStickyEnabled(element)
+            }"
             :style="getComponentStyle(element)"
+            :data-component-id="element.id"
             @click.stop="handleSelectComponent(element.id)"
           >
             <div class="component-content">
@@ -41,7 +45,7 @@
             </div>
             
             <!-- 更多操作按钮 -->
-            <div class="component-actions">
+            <div class="component-actions" @click.stop>
               <a-dropdown 
                 :trigger="['click']"
                 @click.stop
@@ -50,6 +54,10 @@
                   <a-icon type="ellipsis" :style="{ fontSize: '16px', color: '#999' }" />
                 </span>
                 <a-menu slot="overlay">
+                  <a-menu-item @click="handleCopyComponentId(element.id)">
+                    <a-icon type="copy" style="margin-right: 8px;" />
+                    复制ID
+                  </a-menu-item>
                   <a-menu-item 
                     @click="handleDeleteComponent(element.id)"
                     style="color: #ff4d4f;"
@@ -165,12 +173,45 @@ export default {
       return !!this.loadedPreviews[type]
     },
     
+    // 判断组件是否启用了sticky吸顶（如锚点导航）
+    isStickyEnabled(element) {
+      return element.props && element.props.sticky
+    },
+    
     handleSelectComponent(componentId) {
       this.$emit('select-component', componentId)
     },
     
     handleDeleteComponent(componentId) {
       this.$emit('delete-component', componentId)
+    },
+    
+    handleCopyComponentId(componentId) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(componentId).then(() => {
+          this.$message.success('组件ID已复制')
+        }).catch(() => {
+          this.fallbackCopy(componentId)
+        })
+      } else {
+        this.fallbackCopy(componentId)
+      }
+    },
+    
+    fallbackCopy(text) {
+      const textarea = document.createElement('textarea')
+      textarea.value = text
+      textarea.style.position = 'fixed'
+      textarea.style.opacity = '0'
+      document.body.appendChild(textarea)
+      textarea.select()
+      try {
+        document.execCommand('copy')
+        this.$message.success('已复制')
+      } catch (e) {
+        this.$message.error('复制失败，请手动复制')
+      }
+      document.body.removeChild(textarea)
     },
     
     handleDragEnd() {
@@ -272,7 +313,7 @@ export default {
 .component-item {
   position: relative;
   /* margin-bottom: 10px; */
-  border: 3px dashed transparent;
+  border: 2px dashed transparent;
   /* border-radius: 8px; */
   /* transition: all 0.3s ease; */
   cursor: move;
@@ -281,6 +322,17 @@ export default {
 
 .component-item:hover {
   border-color: #d9d9d9;
+}
+.component-item:hover .component-actions {
+  opacity: 1;
+}
+
+/* 允许子组件使用sticky定位（如锚点导航吸顶） */
+.component-item--sticky-allowed {
+  overflow: visible !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1 !important;
 }
 
 .component-selected {
