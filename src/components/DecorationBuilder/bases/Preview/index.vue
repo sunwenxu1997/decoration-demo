@@ -42,6 +42,8 @@
               <div v-else class="loading-component">
                 <a-spin />
               </div>
+              <!-- 编辑模式下禁用组件内部交互的遮罩层（锚点组件除外） -->
+              <div v-if="!isPreviewing && !isInteractionAllowed(element.type)" class="component-content-mask" />
             </div>
             
             <!-- 更多操作按钮 -->
@@ -240,6 +242,13 @@ export default {
         paddingLeft: `${style.paddingLeft || 0}px`,
         paddingRight: `${style.paddingRight || 0}px`
       }
+    },
+    
+    // 判断组件是否允许交互（编辑模式下不显示遮罩层）
+    isInteractionAllowed(type) {
+      // 允许交互的组件类型列表
+      const allowedTypes = ['anchor']
+      return allowedTypes.includes(type)
     }
   }
 }
@@ -332,7 +341,7 @@ export default {
   overflow: visible !important;
   position: sticky !important;
   top: 0 !important;
-  z-index: 1 !important;
+  z-index: 5 !important;
 }
 
 .component-selected {
@@ -343,6 +352,19 @@ export default {
 .component-content {
   /* 移除左侧padding，因为没有拖拽图标了 */
   padding: 0;
+  position: relative;
+}
+
+/* 编辑模式下禁用组件内部交互的遮罩层 */
+.component-content-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+  pointer-events: auto;
+  z-index: 1;
 }
 
 /* 更多操作按钮样式 */
